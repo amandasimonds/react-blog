@@ -2,71 +2,37 @@ import React, { Component } from 'react';
 //import axios from "axios";
 //importing the instance instead of default axios
 import axios from "../../axios"
+import {Route} from "react-router"
+import {Link} from "react-router-dom"
 
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-import NewPost from '../../components/NewPost/NewPost';
+import Posts from "./Posts/Posts"
+import NewPost from "../Blog/NewPost/NewPost"
 import './Blog.css';
+
 
 class Blog extends Component {
 
-    state={
-        posts:[],
-        selectedPostId: null,
-        error: false
-    }
-
-    componentDidMount(){
-        axios.get("/posts")
-            .then(response => {
-                //use slice to only get posts 1-4
-                const posts = response.data.slice(0, 4)
-                const updatedPosts = posts.map(post => {
-                    return {
-                        //distribute property of post
-                        ...post,
-                        //add new property
-                        author: "Max"
-                    }
-                })
-                //we call setstate inside the then block, to prevent js running the rest of the code before getting the data
-                this.setState({posts: updatedPosts});
-                // console.log(response);
-            })
-            .catch(error => {
-                // set the state to error so that it shows a something went wrong" message
-                this.setState({error: true})
-            })
-    }
-
-    postSelectedHandler = (id) => {
-        this.setState({selectedPostId: id})
-    }
-
     render () {
-        let posts = <p style={{textAlign:"center"}}>Something went wrong</p>
-        if (!this.state.error){
-            posts = this.state.posts.map(post => {
-                return <Post 
-                    key={post.id} 
-                    title={post.title} 
-                    author={post.author}
-                    clicked={() => this.postSelectedHandler(post.id)}
-                    />
-            });
-        }
-        
         return (
-            <div>
-                <section className="Posts">
-                    {posts}
-                </section>
-                <section>
-                    <FullPost id={this.state.selectedPostId}/>
-                </section>
-                <section>
-                    <NewPost />
-                </section>
+            <div className="Blog">
+                <header>
+                    <nav>
+                        <ul>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to={{
+                                pathname: "/new-post",
+                                hash: "#submit",
+                                search: "?quick-submit=true"
+                            }}>New Post</Link></li>
+                        </ul>
+                    </nav>
+                </header>
+                {/* <Route path="/" exact render={() => <h1>Home</h1>}/> */}
+                {/* //without "exact" the component will render if it has that route as a prefix */}
+                {/* render is generally used for short messages */}
+                {/* <Route path="/" render={() => <h1>Home2</h1>}/> */}
+                <Route path="/" exact component={Posts} />
+                <Route path="/new-post" exact component={NewPost} />
             </div>
         );
     }
