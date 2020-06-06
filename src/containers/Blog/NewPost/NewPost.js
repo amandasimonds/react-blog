@@ -10,6 +10,10 @@ class NewPost extends Component {
         author: 'Max'
     }
 
+    componentDidMount(){
+        console.log(this.props)
+    }
+
     postDataHandler = () => {
         //axios will translate this object to JSON data
         const data = {

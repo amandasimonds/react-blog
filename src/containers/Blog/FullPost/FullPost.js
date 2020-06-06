@@ -8,17 +8,28 @@ class FullPost extends Component {
         loadedPost: null
     }
 
-    componentDidUpdate(){
-        if (this.props.id){
+    //changed from update to mount, because now we're not UPDATING, it is getting ADDED or MOVED
+    componentDidMount(){
+        console.log(this.props)
+        if (this.props.match.params.id){
             //if statement to make sure we only make a request when we do not have a loaded post, or if the loaded post has a different id
             if ( !this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost !== this.props.id)) {
-                axios.get("/posts/" + this.props.id)
+                axios.get("/posts/" + this.props.match.params.id)
                 .then (response => {
                     // console.log(response);
                     this.setState({loadedPost: response.data})
                 });
             }
         }
+    }
+
+    componentDidUpdate(){
+        console.log(this.props)
+        this.loadData()
+    }
+
+    loadData(){
+
     }
 
     deletePostHandler = () => {
