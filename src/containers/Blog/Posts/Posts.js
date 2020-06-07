@@ -68,7 +68,7 @@ class Posts extends Component {
                     {posts}
                 </section>
                 {/* here is a nested route! */}
-                <Route path={this.props.math.url + "/:id"} exact component={FullPost} />
+                <Route path={this.props.match.url + "/:id"} exact component={FullPost} />
             </div>
         )
     }
